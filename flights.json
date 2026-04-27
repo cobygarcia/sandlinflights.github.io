@@ -6,109 +6,176 @@
     "departureCity": "Indianapolis",
     "departureLat": 39.7684,
     "departureLng": -86.1581,
-    "layover": "Washington, DC",
+    "layovers": [
+      {
+        "city": "Washington, DC",
+        "lat": 38.9072,
+        "lng": -77.0369
+      }
+    ],
     "arrivalCity": "Barcelona",
     "arrivalAirport": "BCN",
     "arrivalLat": 41.2974,
     "arrivalLng": 2.0833,
-    "arrivalDate": "2026-06-12",
+    "arrivalDate": "2026-07-28",
     "arrivalTime": "12:00",
-    "notes": "Might share taxi with noon group"
+    "notes": "Noon arrival group"
   },
   {
     "name": "Michael",
     "airline": "Delta",
     "flightNumber": "DL456",
-    "departureCity": "Boston",
-    "departureLat": 42.3601,
-    "departureLng": -71.0589,
-    "layover": "New York",
+    "departureCity": "Indianapolis",
+    "departureLat": 39.7684,
+    "departureLng": -86.1581,
+    "layovers": [
+      {
+        "city": "Atlanta",
+        "lat": 33.749,
+        "lng": -84.388
+      }
+    ],
     "arrivalCity": "Barcelona",
     "arrivalAirport": "BCN",
     "arrivalLat": 41.2974,
     "arrivalLng": 2.0833,
-    "arrivalDate": "2026-06-12",
-    "arrivalTime": "12:40",
-    "notes": ""
+    "arrivalDate": "2026-07-28",
+    "arrivalTime": "12:45",
+    "notes": "Could group with Catherine"
   },
   {
     "name": "Ana",
     "airline": "American",
     "flightNumber": "AA789",
-    "departureCity": "Chicago",
-    "departureLat": 41.8781,
-    "departureLng": -87.6298,
-    "layover": "Madrid",
+    "departureCity": "Indianapolis",
+    "departureLat": 39.7684,
+    "departureLng": -86.1581,
+    "layovers": [
+      {
+        "city": "Chicago",
+        "lat": 41.8781,
+        "lng": -87.6298
+      },
+      {
+        "city": "Madrid",
+        "lat": 40.4168,
+        "lng": -3.7038
+      }
+    ],
     "arrivalCity": "Barcelona",
     "arrivalAirport": "BCN",
     "arrivalLat": 41.2974,
     "arrivalLng": 2.0833,
-    "arrivalDate": "2026-06-12",
-    "arrivalTime": "13:15",
-    "notes": "Arrives close to Catherine and Michael"
+    "arrivalDate": "2026-07-28",
+    "arrivalTime": "16:20",
+    "notes": "Afternoon arrival"
   },
   {
     "name": "David",
     "airline": "Iberia",
     "flightNumber": "IB2626",
-    "departureCity": "San Francisco",
-    "departureLat": 37.7749,
-    "departureLng": -122.4194,
-    "layover": "Direct",
+    "departureCity": "Indianapolis",
+    "departureLat": 39.7684,
+    "departureLng": -86.1581,
+    "layovers": [
+      {
+        "city": "New York",
+        "lat": 40.7128,
+        "lng": -74.006
+      },
+      {
+        "city": "Madrid",
+        "lat": 40.4168,
+        "lng": -3.7038
+      }
+    ],
     "arrivalCity": "Barcelona",
     "arrivalAirport": "BCN",
     "arrivalLat": 41.2974,
     "arrivalLng": 2.0833,
-    "arrivalDate": "2026-06-12",
-    "arrivalTime": "17:30",
-    "notes": ""
+    "arrivalDate": "2026-07-29",
+    "arrivalTime": "10:10",
+    "notes": "Next-day arrival"
   },
   {
     "name": "Sarah",
     "airline": "British Airways",
     "flightNumber": "BA481",
-    "departureCity": "Los Angeles",
-    "departureLat": 34.0522,
-    "departureLng": -118.2437,
-    "layover": "London",
+    "departureCity": "Indianapolis",
+    "departureLat": 39.7684,
+    "departureLng": -86.1581,
+    "layovers": [
+      {
+        "city": "Philadelphia",
+        "lat": 39.9526,
+        "lng": -75.1652
+      },
+      {
+        "city": "London",
+        "lat": 51.5072,
+        "lng": -0.1276
+      }
+    ],
     "arrivalCity": "Barcelona",
     "arrivalAirport": "BCN",
     "arrivalLat": 41.2974,
     "arrivalLng": 2.0833,
-    "arrivalDate": "2026-06-12",
-    "arrivalTime": "18:10",
-    "notes": "Could group with David"
+    "arrivalDate": "2026-07-30",
+    "arrivalTime": "14:30",
+    "notes": "Midday July 30 arrival"
   },
   {
     "name": "Julia",
     "airline": "Air France",
     "flightNumber": "AF1348",
-    "departureCity": "New York",
-    "departureLat": 40.7128,
-    "departureLng": -74.0060,
-    "layover": "Paris",
+    "departureCity": "Indianapolis",
+    "departureLat": 39.7684,
+    "departureLng": -86.1581,
+    "layovers": [
+      {
+        "city": "Detroit",
+        "lat": 42.3314,
+        "lng": -83.0458
+      },
+      {
+        "city": "Paris",
+        "lat": 48.8566,
+        "lng": 2.3522
+      }
+    ],
     "arrivalCity": "Barcelona",
     "arrivalAirport": "BCN",
     "arrivalLat": 41.2974,
     "arrivalLng": 2.0833,
-    "arrivalDate": "2026-06-13",
+    "arrivalDate": "2026-07-31",
     "arrivalTime": "09:20",
-    "notes": "Arrives next morning"
+    "notes": "Morning arrival"
   },
   {
     "name": "Marcus",
     "airline": "Lufthansa",
     "flightNumber": "LH1126",
-    "departureCity": "Houston",
-    "departureLat": 29.7604,
-    "departureLng": -95.3698,
-    "layover": "Frankfurt",
+    "departureCity": "Indianapolis",
+    "departureLat": 39.7684,
+    "departureLng": -86.1581,
+    "layovers": [
+      {
+        "city": "Chicago",
+        "lat": 41.8781,
+        "lng": -87.6298
+      },
+      {
+        "city": "Frankfurt",
+        "lat": 50.1109,
+        "lng": 8.6821
+      }
+    ],
     "arrivalCity": "Barcelona",
     "arrivalAirport": "BCN",
     "arrivalLat": 41.2974,
     "arrivalLng": 2.0833,
-    "arrivalDate": "2026-06-13",
-    "arrivalTime": "10:05",
-    "notes": ""
+    "arrivalDate": "2026-08-02",
+    "arrivalTime": "11:05",
+    "notes": "August 2 arrival"
   }
 ]
