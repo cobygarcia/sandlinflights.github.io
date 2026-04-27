@@ -7,6 +7,26 @@ async function loadFlights() {
   renderMap(flights);
 }
 
+function formatDate(dateString) {
+  const date = new Date(dateString + "T00:00:00");
+  const month = date.toLocaleString("en-US", { month: "long" });
+  const day = date.getDate();
+
+  let suffix = "th";
+  if (day % 10 === 1 && day !== 11) suffix = "st";
+  if (day % 10 === 2 && day !== 12) suffix = "nd";
+  if (day % 10 === 3 && day !== 13) suffix = "rd";
+
+  return `${month} ${day}${suffix}`;
+}
+
+function formatHour(hour) {
+  const adjusted = hour % 24;
+  const suffix = adjusted >= 12 ? "PM" : "AM";
+  const display = adjusted % 12 === 0 ? 12 : adjusted % 12;
+  return `${display}:00 ${suffix}`;
+}
+
 function renderTable(flights) {
   const container = document.getElementById("flightTable");
 
@@ -22,12 +42,16 @@ function renderTable(flights) {
   `;
 
   flights.forEach(flight => {
+    const layoverText = flight.layovers && flight.layovers.length > 0
+      ? flight.layovers.map(l => l.city).join(" → ")
+      : "Direct";
+
     html += `
       <tr>
         <td>${flight.name}</td>
-        <td>${flight.departureCity} → ${flight.layover || "Direct"} → ${flight.arrivalCity}</td>
+        <td>${flight.departureCity} → ${layoverText} → ${flight.arrivalCity}</td>
         <td>${flight.airline} ${flight.flightNumber}</td>
-        <td>${flight.arrivalDate} at ${flight.arrivalTime}</td>
+        <td>${formatDate(flight.arrivalDate)} at ${flight.arrivalTime}</td>
         <td>${flight.notes || ""}</td>
       </tr>
     `;
@@ -46,7 +70,7 @@ function renderGroups(flights) {
     const blockStart = Math.floor(hour / 2) * 2;
     const blockEnd = blockStart + 2;
 
-    const key = `${flight.arrivalCity} — ${flight.arrivalDate} — ${formatHour(blockStart)} to ${formatHour(blockEnd)}`;
+    const key = `${flight.arrivalCity} — ${formatDate(flight.arrivalDate)} — ${formatHour(blockStart)} to ${formatHour(blockEnd)}`;
 
     if (!groups[key]) {
       groups[key] = [];
@@ -58,6 +82,8 @@ function renderGroups(flights) {
   let html = "";
 
   Object.keys(groups).forEach(groupName => {
+    if (groups[groupName].length === 0) return;
+
     html += `
       <div class="card">
         <div class="group-title">${groupName}</div>
@@ -82,33 +108,40 @@ function renderGroups(flights) {
   container.innerHTML = html;
 }
 
-function formatHour(hour) {
-  const adjusted = hour % 24;
-  const suffix = adjusted >= 12 ? "PM" : "AM";
-  const display = adjusted % 12 === 0 ? 12 : adjusted % 12;
-  return `${display}:00 ${suffix}`;
-}
-
 function renderMap(flights) {
-  const map = L.map("map").setView([41.3851, 2.1734], 3);
+  const map = L.map("map").setView([42, -35], 3);
 
   L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
     attribution: "© OpenStreetMap contributors"
   }).addTo(map);
 
   flights.forEach(flight => {
-    const departure = [flight.departureLat, flight.departureLng];
-    const arrival = [flight.arrivalLat, flight.arrivalLng];
+    const route = [
+      {
+        city: flight.departureCity,
+        lat: flight.departureLat,
+        lng: flight.departureLng
+      },
+      ...(flight.layovers || []),
+      {
+        city: flight.arrivalCity,
+        lat: flight.arrivalLat,
+        lng: flight.arrivalLng
+      }
+    ];
 
-    L.marker(departure)
-      .addTo(map)
-      .bindPopup(`<strong>${flight.name}</strong><br>${flight.departureCity}`);
+    route.forEach((stop, index) => {
+      L.marker([stop.lat, stop.lng])
+        .addTo(map)
+        .bindPopup(`
+          <strong>${flight.name}</strong><br>
+          ${index === 0 ? "Departure" : index === route.length - 1 ? "Arrival" : "Layover"}: ${stop.city}
+        `);
+    });
 
-    L.marker(arrival)
-      .addTo(map)
-      .bindPopup(`<strong>${flight.arrivalCity}</strong><br>${flight.name} arrives ${flight.arrivalTime}`);
+    const linePoints = route.map(stop => [stop.lat, stop.lng]);
 
-    L.polyline([departure, arrival], {
+    L.polyline(linePoints, {
       weight: 3,
       opacity: 0.7
     }).addTo(map);
