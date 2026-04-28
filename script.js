@@ -2,7 +2,7 @@ async function loadFlights() {
   const response = await fetch("flights.json");
   const flights = await response.json();
 
-  const outboundFlights = flights.filter(flight => flight.tripType === "outbound");
+  const outboundFlights = flights.filter(flight => flight.tripType === "outbound"); 
   const returnFlights = flights.filter(flight => flight.tripType === "return");
 
   renderGroups(outboundFlights, "outboundGroups", "arrival");
