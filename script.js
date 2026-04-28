@@ -2,12 +2,21 @@ async function loadFlights() {
   const response = await fetch("flights.json");
   const flights = await response.json();
 
-  renderTable(flights);
-  renderGroups(flights);
-  renderMap(flights);
+  const outboundFlights = flights.filter(flight => flight.tripType === "outbound");
+  const returnFlights = flights.filter(flight => flight.tripType === "return");
+
+  renderGroups(outboundFlights, "outboundGroups", "arrival");
+  renderMap(outboundFlights, "outboundMap");
+  renderTable(outboundFlights, "outboundFlights", "arrival");
+
+  renderGroups(returnFlights, "returnGroups", "departure");
+  renderMap(returnFlights, "returnMap");
+  renderTable(returnFlights, "returnFlights", "departure");
 }
 
 function formatDate(dateString) {
+  if (!dateString) return "";
+
   const date = new Date(dateString + "T00:00:00");
   const month = date.toLocaleString("en-US", { month: "long" });
   const day = date.getDate();
@@ -27,50 +36,29 @@ function formatHour(hour) {
   return `${display}:00 ${suffix}`;
 }
 
-function renderTable(flights) {
-  const container = document.getElementById("flightTable");
+function renderGroups(flights, containerId, mode) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
 
-  let html = `
-    <table>
-      <tr>
-        <th>Name</th>
-        <th>Route</th>
-        <th>Flight</th>
-        <th>Arrival</th>
-        <th>Notes</th>
-      </tr>
-  `;
+  if (flights.length === 0) {
+    container.innerHTML = "";
+    return;
+  }
 
-  flights.forEach(flight => {
-    const layoverText = flight.layovers && flight.layovers.length > 0
-      ? flight.layovers.map(l => l.city).join(" → ")
-      : "Direct";
-
-    html += `
-      <tr>
-        <td>${flight.name}</td>
-        <td>${flight.departureCity} → ${layoverText} → ${flight.arrivalCity}</td>
-        <td>${flight.airline} ${flight.flightNumber}</td>
-        <td>${formatDate(flight.arrivalDate)} at ${flight.arrivalTime}</td>
-        <td>${flight.notes || ""}</td>
-      </tr>
-    `;
-  });
-
-  html += `</table>`;
-  container.innerHTML = html;
-}
-
-function renderGroups(flights) {
-  const container = document.getElementById("groups");
   const groups = {};
 
   flights.forEach(flight => {
-    const hour = Number(flight.arrivalTime.split(":")[0]);
+    const date = mode === "arrival" ? flight.arrivalDate : flight.departureDate;
+    const time = mode === "arrival" ? flight.arrivalTime : flight.departureTime;
+    const city = mode === "arrival" ? flight.arrivalCity : flight.departureCity;
+
+    if (!date || !time) return;
+
+    const hour = Number(time.split(":")[0]);
     const blockStart = Math.floor(hour / 2) * 2;
     const blockEnd = blockStart + 2;
 
-    const key = `${flight.arrivalCity} — ${formatDate(flight.arrivalDate)} — ${formatHour(blockStart)} to ${formatHour(blockEnd)}`;
+    const key = `${city} — ${formatDate(date)} — ${formatHour(blockStart)} to ${formatHour(blockEnd)}`;
 
     if (!groups[key]) {
       groups[key] = [];
@@ -91,10 +79,14 @@ function renderGroups(flights) {
     `;
 
     groups[groupName].forEach(flight => {
+      const time = mode === "arrival" ? flight.arrivalTime : flight.departureTime;
+      const city = mode === "arrival" ? flight.departureCity : flight.arrivalCity;
+      const phrase = mode === "arrival" ? "arrives" : "leaves";
+
       html += `
         <li>
-          <strong>${flight.name}</strong> arrives at ${flight.arrivalTime}
-          from ${flight.departureCity}
+          <strong>${flight.name}</strong> ${phrase} at ${time}
+          ${mode === "arrival" ? "from" : "to"} ${city}
         </li>
       `;
     });
@@ -108,40 +100,120 @@ function renderGroups(flights) {
   container.innerHTML = html;
 }
 
-function renderMap(flights) {
-  const map = L.map("map").setView([42, -35], 3);
+function renderTable(flights, containerId, mode) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+
+  if (flights.length === 0) {
+    container.innerHTML = "";
+    return;
+  }
+
+  let html = `
+    <table>
+      <tr>
+        <th>Name</th>
+        <th>Route</th>
+        <th>Flights</th>
+        <th>${mode === "arrival" ? "Arrives" : "Leaves"}</th>
+        <th>Notes</th>
+      </tr>
+  `;
+
+  flights.forEach(flight => {
+    const route = getRouteText(flight);
+    const flightNumbers = getFlightNumbers(flight);
+
+    const date = mode === "arrival" ? flight.arrivalDate : flight.departureDate;
+    const time = mode === "arrival" ? flight.arrivalTime : flight.departureTime;
+
+    html += `
+      <tr>
+        <td>${flight.name}</td>
+        <td>${route}</td>
+        <td>${flightNumbers}</td>
+        <td>${formatDate(date)} at ${time}</td>
+        <td>${flight.notes || ""}</td>
+      </tr>
+    `;
+  });
+
+  html += `</table>`;
+  container.innerHTML = html;
+}
+
+function getRouteText(flight) {
+  if (!flight.segments || flight.segments.length === 0) {
+    return `${flight.departureCity} → ${flight.arrivalCity}`;
+  }
+
+  const route = [];
+
+  flight.segments.forEach((segment, index) => {
+    if (index === 0) {
+      route.push(segment.fromCity);
+    }
+    route.push(segment.toCity);
+  });
+
+  return route.join(" → ");
+}
+
+function getFlightNumbers(flight) {
+  if (!flight.segments || flight.segments.length === 0) {
+    return "";
+  }
+
+  return flight.segments
+    .map(segment => `${segment.airline} ${segment.flightNumber}`)
+    .join(", ");
+}
+
+function renderMap(flights, mapId) {
+  const mapContainer = document.getElementById(mapId);
+  if (!mapContainer) return;
+
+  if (flights.length === 0) {
+    mapContainer.innerHTML = "";
+    return;
+  }
+
+  const map = L.map(mapId).setView([42, -35], 3);
 
   L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
     attribution: "© OpenStreetMap contributors"
   }).addTo(map);
 
   flights.forEach(flight => {
-    const route = [
-      {
-        city: flight.departureCity,
-        lat: flight.departureLat,
-        lng: flight.departureLng
-      },
-      ...(flight.layovers || []),
-      {
-        city: flight.arrivalCity,
-        lat: flight.arrivalLat,
-        lng: flight.arrivalLng
-      }
-    ];
+    if (!flight.segments || flight.segments.length === 0) return;
 
-    route.forEach((stop, index) => {
-      L.marker([stop.lat, stop.lng])
+    const routePoints = [];
+
+    flight.segments.forEach(segment => {
+      const fromPoint = [segment.fromLat, segment.fromLng];
+      const toPoint = [segment.toLat, segment.toLng];
+
+      routePoints.push(fromPoint);
+      routePoints.push(toPoint);
+
+      L.marker(fromPoint)
         .addTo(map)
         .bindPopup(`
           <strong>${flight.name}</strong><br>
-          ${index === 0 ? "Departure" : index === route.length - 1 ? "Arrival" : "Layover"}: ${stop.city}
+          ${segment.fromCity} (${segment.fromAirport})<br>
+          Leaves ${formatDate(segment.departureDate)} at ${segment.departureTime}
+        `);
+
+      L.marker(toPoint)
+        .addTo(map)
+        .bindPopup(`
+          <strong>${flight.name}</strong><br>
+          ${segment.toCity} (${segment.toAirport})<br>
+          Arrives ${formatDate(segment.arrivalDate)} at ${segment.arrivalTime}
         `);
     });
 
-    const linePoints = route.map(stop => [stop.lat, stop.lng]);
-
-    L.polyline(linePoints, {
+    L.polyline(routePoints, {
       weight: 3,
       opacity: 0.7
     }).addTo(map);
