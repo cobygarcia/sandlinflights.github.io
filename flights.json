@@ -688,13 +688,13 @@
   "departureAirport": "BCN",
   "departureLat": 41.2969,
   "departureLng": 2.0783,
-  "departureDate": "2026-08-03",
+  "departureDate": "2026-08-06",
   "departureTime": "10:55",
   "arrivalCity": "Indianapolis",
   "arrivalAirport": "IND",
   "arrivalLat": 39.7173,
   "arrivalLng": -86.2946,
-  "arrivalDate": "2026-08-03",
+  "arrivalDate": "2026-08-06",
   "arrivalTime": "17:10",
   "segments": [
     {
@@ -708,9 +708,9 @@
       "toAirport": "ATL",
       "toLat": 33.6407,
       "toLng": -84.4277,
-      "departureDate": "2026-08-03",
+      "departureDate": "2026-08-06",
       "departureTime": "10:55",
-      "arrivalDate": "2026-08-03",
+      "arrivalDate": "2026-08-06",
       "arrivalTime": "14:49"
     },
     {
@@ -724,9 +724,9 @@
       "toAirport": "IND",
       "toLat": 39.7173,
       "toLng": -86.2946,
-      "departureDate": "2026-08-03",
+      "departureDate": "2026-08-06",
       "departureTime": "15:53",
-      "arrivalDate": "2026-08-03",
+      "arrivalDate": "2026-08-06",
       "arrivalTime": "17:10"
     }
   ],
@@ -739,13 +739,13 @@
   "departureAirport": "BCN",
   "departureLat": 41.2969,
   "departureLng": 2.0783,
-  "departureDate": "2026-08-03",
+  "departureDate": "2026-08-06",
   "departureTime": "10:55",
   "arrivalCity": "Indianapolis",
   "arrivalAirport": "IND",
   "arrivalLat": 39.7173,
   "arrivalLng": -86.2946,
-  "arrivalDate": "2026-08-03",
+  "arrivalDate": "2026-08-06",
   "arrivalTime": "17:10",
   "segments": [
     {
@@ -759,9 +759,9 @@
       "toAirport": "ATL",
       "toLat": 33.6407,
       "toLng": -84.4277,
-      "departureDate": "2026-08-03",
+      "departureDate": "2026-08-06",
       "departureTime": "10:55",
-      "arrivalDate": "2026-08-03",
+      "arrivalDate": "2026-08-06",
       "arrivalTime": "14:49"
     },
     {
@@ -775,11 +775,14 @@
       "toAirport": "IND",
       "toLat": 39.7173,
       "toLng": -86.2946,
-      "departureDate": "2026-08-03",
+      "departureDate": "2026-08-06",
       "departureTime": "15:53",
-      "arrivalDate": "2026-08-03",
+      "arrivalDate": "2026-08-06",
       "arrivalTime": "17:10"
     }
+  ],
+  "notes": ""
+}
   ],
   "notes": ""
 }
