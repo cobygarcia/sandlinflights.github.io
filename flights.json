@@ -1,5 +1,75 @@
 [
   {
+  "name": "Coby Garcia",
+  "tripType": "outbound",
+  "departureCity": "Boston",
+  "departureAirport": "BOS",
+  "departureLat": 42.3656,
+  "departureLng": -71.0096,
+  "departureDate": "2026-07-31",
+  "departureTime": "23:00",
+  "arrivalCity": "Barcelona",
+  "arrivalAirport": "BCN",
+  "arrivalLat": 41.2969,
+  "arrivalLng": 2.0783,
+  "arrivalDate": "2026-08-01",
+  "arrivalTime": "12:10",
+  "segments": [
+    {
+      "airline": "Iberia",
+      "flightNumber": "IB2626",
+      "fromCity": "Boston",
+      "fromAirport": "BOS",
+      "fromLat": 42.3656,
+      "fromLng": -71.0096,
+      "toCity": "Barcelona",
+      "toAirport": "BCN",
+      "toLat": 41.2969,
+      "toLng": 2.0783,
+      "departureDate": "2026-07-31",
+      "departureTime": "23:00",
+      "arrivalDate": "2026-08-01",
+      "arrivalTime": "12:10"
+    }
+  ],
+  "notes": ""
+},
+{
+  "name": "Coby Garcia",
+  "tripType": "return",
+  "departureCity": "Barcelona",
+  "departureAirport": "BCN",
+  "departureLat": 41.2969,
+  "departureLng": 2.0783,
+  "departureDate": "2026-08-06",
+  "departureTime": "19:10",
+  "arrivalCity": "Boston",
+  "arrivalAirport": "BOS",
+  "arrivalLat": 42.3656,
+  "arrivalLng": -71.0096,
+  "arrivalDate": "2026-08-06",
+  "arrivalTime": "21:45",
+  "segments": [
+    {
+      "airline": "Iberia",
+      "flightNumber": "IB2625",
+      "fromCity": "Barcelona",
+      "fromAirport": "BCN",
+      "fromLat": 41.2969,
+      "fromLng": 2.0783,
+      "toCity": "Boston",
+      "toAirport": "BOS",
+      "toLat": 42.3656,
+      "toLng": -71.0096,
+      "departureDate": "2026-08-06",
+      "departureTime": "19:10",
+      "arrivalDate": "2026-08-06",
+      "arrivalTime": "21:45"
+    }
+  ],
+  "notes": ""
+},
+  {
     "name": "Kelly McDonald",
     "tripType": "outbound",
     "departureCity": "Indianapolis",
