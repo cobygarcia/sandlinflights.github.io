@@ -3,20 +3,27 @@
 <head>
   <title>Sandlin Flights ✈️💍</title>
 
-  <!-- Keep your cute styling -->
   <style>
     body {
       margin: 0;
       background: linear-gradient(to bottom, #fff0f5, #ffe4e1);
-      font-family: "Comic Sans MS", cursive, sans-serif;
+      font-family: Arial, sans-serif;
       text-align: center;
+      color: #333;
     }
 
     h1 {
+      font-family: "Comic Sans MS", cursive, sans-serif;
       font-size: 3em;
       color: #ff4d6d;
       margin-bottom: 10px;
       animation: bounce 1.5s infinite;
+    }
+
+    h2 {
+      color: #d6336c;
+      font-size: 1.8em;
+      margin-bottom: 15px;
     }
 
     img {
@@ -32,17 +39,21 @@
       width: 100%;
       font-size: 2em;
       animation: float 3s ease-in-out infinite;
+      font-family: "Comic Sans MS", cursive, sans-serif;
     }
 
     section {
-      margin: 40px auto;
-      max-width: 1000px;
+      margin: 45px auto;
+      max-width: 1100px;
+      padding: 0 20px;
     }
 
-    #map {
-      height: 400px;
+    #outboundMap,
+    #returnMap {
+      height: 450px;
       border-radius: 20px;
       margin-top: 20px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.15);
     }
 
     table {
@@ -51,23 +62,48 @@
       border-radius: 15px;
       overflow: hidden;
       margin-top: 20px;
+      border-collapse: collapse;
+      font-size: 16px;
     }
 
     th, td {
-      padding: 10px;
+      padding: 12px;
       border-bottom: 1px solid #eee;
+      text-align: left;
+      vertical-align: top;
     }
 
     th {
       background: #ffccd5;
+      font-weight: bold;
     }
 
     .card {
       background: white;
-      padding: 15px;
-      margin: 15px;
+      padding: 18px;
+      margin: 15px auto;
       border-radius: 15px;
       box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      text-align: left;
+      font-size: 17px;
+      line-height: 1.5;
+    }
+
+    .group-title {
+      font-weight: bold;
+      color: #ff4d6d;
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+
+    .after-wedding-divider {
+      margin-top: 70px;
+      padding: 25px;
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      font-size: 1.5em;
+      color: #777;
     }
 
     @keyframes bounce {
@@ -81,7 +117,6 @@
     }
   </style>
 
-  <!-- Leaflet map -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
 </head>
 
@@ -89,29 +124,47 @@
 
   <div class="hearts">💖 💕 💍 💖 💕</div>
 
-  <h1>omg, ur getting married 💍✨</h1>
-
-  <img src="sandlin.png" alt="Sandlin Flights">
-
-  <!-- NEW: GROUPS -->
   <section>
-    <h2>Arrival Groups</h2>
-    <div id="groups"></div>
+    <h1>omg, ur getting married 💍✨</h1>
+    <img src="sandlin.png" alt="Sandlin Flights">
   </section>
 
-  <!-- NEW: MAP -->
   <section>
-    <h2>Flight Map</h2>
-    <div id="map"></div>
+    <h2>Groups that are landing at the Barcelona airport around the same time!</h2>
+    <div id="outboundGroups"></div>
   </section>
 
-  <!-- NEW: TABLE -->
   <section>
-    <h2>All Flights</h2>
-    <div id="flightTable"></div>
+    <h2>Flight Map to Barcelona</h2>
+    <div id="outboundMap"></div>
   </section>
 
-  <!-- Scripts -->
+  <section>
+    <h2>All Flights Arriving at the Wedding</h2>
+    <div id="outboundFlights"></div>
+  </section>
+
+  <section>
+    <div class="after-wedding-divider">
+      Ignore this part of the website until after the wedding
+    </div>
+  </section>
+
+  <section>
+    <h2>Groups that are leaving to go back to the US around the same time!</h2>
+    <div id="returnGroups"></div>
+  </section>
+
+  <section>
+    <h2>Flight Map back home</h2>
+    <div id="returnMap"></div>
+  </section>
+
+  <section>
+    <h2>All Flights that are heading home after the wedding</h2>
+    <div id="returnFlights"></div>
+  </section>
+
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
   <script src="script.js"></script>
 
