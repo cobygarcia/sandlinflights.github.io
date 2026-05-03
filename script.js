@@ -2,7 +2,7 @@ async function loadFlights() {
   const response = await fetch("flights.json");
   const flights = await response.json();
 
-  const outboundFlights = flights.filter(flight => flight.tripType === "outbound"); 
+  const outboundFlights = flights.filter(flight => flight.tripType === "outbound");
   const returnFlights = flights.filter(flight => flight.tripType === "return");
 
   renderGroups(outboundFlights, "outboundGroups", "arrival");
@@ -36,6 +36,10 @@ function formatHour(hour) {
   return `${display}:00 ${suffix}`;
 }
 
+function getSortableDateTime(date, hour) {
+  return new Date(`${date}T${String(hour).padStart(2, "0")}:00:00`);
+}
+
 function renderGroups(flights, containerId, mode) {
   const container = document.getElementById(containerId);
   if (!container) return;
@@ -61,32 +65,45 @@ function renderGroups(flights, containerId, mode) {
     const key = `${city} — ${formatDate(date)} — ${formatHour(blockStart)} to ${formatHour(blockEnd)}`;
 
     if (!groups[key]) {
-      groups[key] = [];
+      groups[key] = {
+        title: key,
+        sortTime: getSortableDateTime(date, blockStart),
+        flights: []
+      };
     }
 
-    groups[key].push(flight);
+    groups[key].flights.push(flight);
+  });
+
+  const sortedGroups = Object.values(groups).sort((a, b) => {
+    return a.sortTime - b.sortTime;
   });
 
   let html = "";
 
-  Object.keys(groups).forEach(groupName => {
-    if (groups[groupName].length === 0) return;
+  sortedGroups.forEach(group => {
+    group.flights.sort((a, b) => {
+      const timeA = mode === "arrival" ? a.arrivalTime : a.departureTime;
+      const timeB = mode === "arrival" ? b.arrivalTime : b.departureTime;
+      return timeA.localeCompare(timeB);
+    });
 
     html += `
       <div class="card">
-        <div class="group-title">${groupName}</div>
+        <div class="group-title">${group.title}</div>
         <ul>
     `;
 
-    groups[groupName].forEach(flight => {
+    group.flights.forEach(flight => {
       const time = mode === "arrival" ? flight.arrivalTime : flight.departureTime;
-      const city = mode === "arrival" ? flight.departureCity : flight.arrivalCity;
+      const otherCity = mode === "arrival" ? flight.departureCity : flight.arrivalCity;
       const phrase = mode === "arrival" ? "arrives" : "leaves";
+      const direction = mode === "arrival" ? "from" : "to";
 
       html += `
         <li>
           <strong>${flight.name}</strong> ${phrase} at ${time}
-          ${mode === "arrival" ? "from" : "to"} ${city}
+          ${direction} ${otherCity}
         </li>
       `;
     });
@@ -108,6 +125,16 @@ function renderTable(flights, containerId, mode) {
     container.innerHTML = "";
     return;
   }
+
+  flights.sort((a, b) => {
+    const dateA = mode === "arrival" ? a.arrivalDate : a.departureDate;
+    const timeA = mode === "arrival" ? a.arrivalTime : a.departureTime;
+
+    const dateB = mode === "arrival" ? b.arrivalDate : b.departureDate;
+    const timeB = mode === "arrival" ? b.arrivalTime : b.departureTime;
+
+    return new Date(`${dateA}T${timeA}:00`) - new Date(`${dateB}T${timeB}:00`);
+  });
 
   let html = `
     <table>
